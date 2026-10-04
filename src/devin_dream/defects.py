@@ -51,9 +51,12 @@ class SessionSpec:
     agent_mode: str
     messages: tuple[tuple[str, str], ...]  # (role, content)
     tool_calls: tuple[ToolCallSpec, ...] = ()
-    expected: dict[str, str] = field(default_factory=dict)
+    expected: dict[str, Any] = field(default_factory=dict)
     schema_version_override: int | None = None
     labels: tuple[str, ...] = ("synthetic",)
+    # fleet extras — empty/0 keeps the unit-defect behavior unchanged
+    workspace_dirs: tuple[str, ...] = ()   # defaults to [working_directory]
+    duration_ms: int = 120_000             # created_at -> last_activity_at
 
 
 def _msg(role: str, content: str, n: int) -> tuple[str, str]:

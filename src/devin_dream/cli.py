@@ -9,9 +9,11 @@ from pathlib import Path
 
 from devin_dream.defects import ADVERSARIAL, DEFECTS, UNIT_IDS
 from devin_dream.generate import (
-    fleet_specs,
+    build_fleet,
     write_expected,
+    write_fleet_manifest,
     write_sessions_db,
+    write_state_vscdb,
 )
 
 
@@ -64,12 +66,26 @@ def _cmd_inject(args: argparse.Namespace) -> int:
 
 
 def _cmd_fleet(args: argparse.Namespace) -> int:
+    if args.sessions < 1:
+        print("error: --sessions must be >= 1", file=sys.stderr)
+        return 2
     out = Path(args.out)
-    specs = fleet_specs(args.n, seed=args.seed)
-    write_sessions_db(out / "sessions.db", specs, seed=args.seed)
-    noise = sum(1 for s in specs if any(l.startswith("noise") for l in s.labels))
-    print(f"fleet: {len(specs)} sessions ({noise} noise) -> "
+    plan = build_fleet(args.sessions, seed=args.seed)
+    write_sessions_db(out / "sessions.db", plan.specs, seed=args.seed)
+    counts: dict[str, int] = {}
+    for s in plan.specs:
+        arch = next((l.split(":", 1)[1] for l in s.labels
+                     if l.startswith("archetype:")), "unknown")
+        counts[arch] = counts.get(arch, 0) + 1
+    mix = ", ".join(f"{a}={c}" for a, c in sorted(counts.items()))
+    print(f"fleet: {len(plan.specs)} sessions ({mix}) -> "
           f"{out / 'sessions.db'}")
+    if args.vscdb:
+        vdb = write_state_vscdb(args.vscdb, plan, seed=args.seed)
+        print(f"fleet: {len(plan.gui)} GUI binding(s) -> {vdb}")
+    if args.manifest:
+        mp = write_fleet_manifest(out, plan, seed=args.seed)
+        print(f"fleet: manifest -> {mp}")
     return 0
 
 
@@ -97,10 +113,19 @@ def build_parser() -> argparse.ArgumentParser:
     i.set_defaults(func=_cmd_inject)
 
     f = sub.add_parser("fleet",
-                       help="bulk sessions with realistic noise mix")
+                       help="seeded population of archetype sessions")
     f.add_argument("--out", required=True)
-    f.add_argument("--n", type=int, default=1000)
+    f.add_argument("--sessions", "--n", dest="sessions", type=int,
+                   default=1000,
+                   help="population size (--n kept as an alias)")
     f.add_argument("--seed", type=int, default=0)
+    f.add_argument("--vscdb", default=None, metavar="PATH",
+                   help="also emit a synthetic state.vscdb at PATH with "
+                        "windsurfSpace.sessionWorkspace bindings for a "
+                        "fraction of sessions")
+    f.add_argument("--manifest", action="store_true",
+                   help="write fleet.json with per-session archetype and "
+                        "expected properties")
     f.set_defaults(func=_cmd_fleet)
     return p
 
