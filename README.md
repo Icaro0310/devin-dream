@@ -4,7 +4,7 @@ Synthetic Devin sessions with a **known verdict** — regression and
 adversarial test data for the `devin-*` catalog.
 
 > Unofficial community project; not affiliated with or endorsed by
-**[Windows](README.windows.md)** · **[Linux](README.linux.md)** · English
+**[Linux](README.linux.md)** · **[Personal Windows](README.windows.md)** · **[Corporate Windows](README.corporate-windows.md)**
 
 Every tool in the ecosystem reads Devin's local stores. Testing them needs
 sessions — but real sessions are private. `devin-dream` generates
