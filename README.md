@@ -4,7 +4,7 @@ Synthetic Devin sessions with a **known verdict** — regression and
 adversarial test data for the `devin-*` catalog.
 
 > Unofficial community project; not affiliated with or endorsed by
-> Cognition AI. **[Português (BR)](README.pt-BR.md)** · English
+**[Windows](README.windows.md)** · **[Linux](README.linux.md)** · English
 
 Every tool in the ecosystem reads Devin's local stores. Testing them needs
 sessions — but real sessions are private. `devin-dream` generates
