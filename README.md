@@ -6,6 +6,8 @@ adversarial test data for the `devin-*` catalog.
 > Unofficial community project; not affiliated with or endorsed by
 **[Linux](README.linux.md)** · **[Personal Windows](README.windows.md)** · **[Corporate Windows](README.corporate-windows.md)**
 
+Part of the [awesome-devin](https://github.com/Icaro0310/awesome-devin) ecosystem: the curated hub for the devin-* tools.
+
 Every tool in the ecosystem reads Devin's local stores. Testing them needs
 sessions — but real sessions are private. `devin-dream` generates
 `sessions.db` files in the exact real DDL (reusing
