@@ -1,3 +1,9 @@
+<div align="center">
+
+<a href="https://github.com/Icaro0310/devin-dream/actions/workflows/ci.yml"><img src="https://github.com/Icaro0310/devin-dream/actions/workflows/ci.yml/badge.svg" alt="ci"/></a>
+
+</div>
+
 # devin-dream
 
 Synthetic Devin sessions with a **known verdict** — regression and
