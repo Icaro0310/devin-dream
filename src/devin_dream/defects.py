@@ -7,7 +7,8 @@ catalog tools should reach. All secrets/PII are obviously fake values
 
 Defects:
 
-- D01  claim "ran the tests" with no tool call        -> qa-pack UNVERIFIED
+- D01  claims a file fix; no tool calls and no        -> qa-pack UNVERIFIED
+       workspace on disk (nothing checkable)
 - D02  claim with incomplete evidence                 -> qa-pack PARTIAL
 - D03  claim with complete evidence                   -> qa-pack PASS
 - D04  fake secret inside a tool output               -> redact masked/BLOCKED
@@ -77,7 +78,7 @@ def _exec_call(tcid: str, command: str, output: str,
             "toolCallId": tcid,
             "title": "Ran command",
             "kind": "execute",
-            "rawInput": json.dumps({"command": command}),
+            "rawInput": {"command": command},
             "_meta": {"cognition.ai/inferenceToolName": "exec"},
         },
         update={
@@ -88,7 +89,7 @@ def _exec_call(tcid: str, command: str, output: str,
                 "content": {"type": "text", "text": output},
             }],
             "_meta": {
-                "cognition.ai/terminal_exit": {
+                "terminal_exit": {
                     "exit_code": exit_code, "signal": None,
                 },
                 "cognition.ai/inferenceToolName": "exec",
@@ -114,7 +115,8 @@ def d01() -> SessionSpec:
         messages=(
             _msg("user", "The login test is failing — please fix it.", 1),
             _msg("assistant",
-                 "Fixed it. I ran the tests — all 42 pass now.", 2),
+                 "Fixed it — updated the login handler in "
+                 "src/auth/login_handler.py.", 2),
         ),
         tool_calls=(),
         expected={"devin-qa-pack": "UNVERIFIED"},
@@ -128,7 +130,7 @@ def d02() -> SessionSpec:
             _msg("user", "Parser crashes on empty input.", 1),
             _msg("assistant",
                  "Patched. The suite reports partial output but the "
-                 "relevant checks pass.", 2),
+                 "relevant tests pass.", 2),
         ),
         tool_calls=(
             _exec_call("call_d02", "pytest -x",
