@@ -1,5 +1,34 @@
 <div align="center">
 
+# devin-dream — MOVED
+
+**This repository was absorbed into
+[`devin-evals`](https://github.com/Icaro0310/devin-evals).**
+
+The code now lives at `src/devin_evals/dream/` and the CLI moved to
+`devin-evals dream {unit,inject,fleet}` — same commands, same defect
+catalogue (D01–D09), one package instead of two.
+
+```bash
+# before
+devin-dream unit --out out/ --defect D01 D03
+
+# after
+devin-evals dream unit --out out/ --defect D01 D03
+```
+
+The repository is archived; open issues were migrated to devin-evals.
+History remains readable here for reference.
+
+</div>
+
+---
+
+<details>
+<summary>Original README (pre-archive)</summary>
+
+<div align="center">
+
 <a href="https://github.com/Icaro0310/devin-dream/actions/workflows/ci.yml"><img src="https://github.com/Icaro0310/devin-dream/actions/workflows/ci.yml/badge.svg" alt="ci"/></a>
 
 <a href="https://scorecard.dev/viewer/?uri=github.com/Icaro0310/devin-dream"><img src="https://api.scorecard.dev/projects/github.com/Icaro0310/devin-dream/badge" alt="OpenSSF Scorecard"/></a>
@@ -138,3 +167,6 @@ byte-identical `sessions.db`.
 
 Requires Python ≥ 3.10, stdlib only beyond `devin-internals-spec`.
 Read-only w.r.t. real Devin stores: it only writes its own output dir.
+
+
+</details>
